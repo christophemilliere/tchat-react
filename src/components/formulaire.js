@@ -1,12 +1,13 @@
 import React from 'react';
 class Fomulaire extends React.Component {
 	state = {
-		length: this.props.length
+		length: this.props.length,
+		message: ""
 	}
 	createMessage = (event) => {
 		event.preventDefault();
 		const message  = {
-			message: this.message.value,
+			message: this.state.message,
 			pseudo: this.props.pseudo
 		}
 		this.props.addMessage(message);
@@ -16,19 +17,19 @@ class Fomulaire extends React.Component {
 		this.setState({ length });
 	};
 
-	decrement = (event) => {
-		const length = this.props.length - this.message.value.length
+	handleChange = (event) => {
+		this.setState({message: event.target.value});
+		const length = this.props.length - this.state.message.length
 		this.setState({length});
-	};
+  };
 	render(){
 		return(
 			<div>
 				<form className="form" 
 					onSubmit={ (e) => this.createMessage(e)} 
 					ref={input => this.messageForm = input } >
-					<textarea required maxLength={ this.props.length }
-					ref={input =>{this.message = input}}
-					onChange={ e => this.decrement(e)}></textarea>
+					<textarea required value={this.state.message} maxLength={ this.props.length }
+					onChange={ this.handleChange }></textarea>
 					<div className="info">{ this.state.length }</div>
 					<button type="submit"> Envoyer!</button>
 				</form>
